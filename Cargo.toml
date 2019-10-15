@@ -5,3 +5,17 @@ authors = ["Markus Røyset <maroider@protonmail.com>"]
 edition = "2018"
 
 [dependencies]
+env_logger = "0.7.0"
+imgui = "0.2.1"
+imgui-wgpu = "0.1.0"
+imgui-winit-support = { version = "0.2.1", default-features = false, features = ["winit-20"] }
+raw-window-handle = "0.1.2"
+wgpu = "0.3.0"
+winit = "0.20.0-alpha3"
+
+[features]
+vulkan = ["wgpu/vulkan"]
+metal = ["wgpu/metal"]
+dx12 = ["wgpu/dx12"]
+dx11 = ["wgpu/dx11"]
+# gl = ["wgpu/gl"]
