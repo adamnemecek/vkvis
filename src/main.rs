@@ -8,6 +8,8 @@ use winit::{
     window::Window,
 };
 
+mod node_editor;
+
 fn main() {
     env_logger::init();
 
@@ -89,7 +91,9 @@ fn main() {
     };
     let mut renderer = Renderer::new(&mut imgui, &mut device, sc_desc.format, Some(clear_color));
 
-    let mut state = State {};
+    let mut state = State {
+        viewport_pos: [0.0, 0.0],
+    };
 
     // Event loop
     event_loop.run(move |event, _, control_flow| {
@@ -151,6 +155,8 @@ fn main() {
                     .expect("Rendering failed");
 
                 device.get_queue().submit(&[encoder.finish()]);
+
+                std::thread::sleep(std::time::Duration::from_millis(4));
             }
             _ => (),
         }
@@ -159,6 +165,12 @@ fn main() {
     });
 }
 
-fn draw_ui(_state: &mut State, _ui: &Ui<'_>) {}
+fn draw_ui(state: &mut State, ui: &Ui<'_>) {
+    imgui::Window::new(im_str!("Node Editor Container Window")).build(ui, || {
+        node_editor::NodeEditor::new(im_str!("Node Editor")).build(ui, &mut state.viewport_pos);
+    });
+}
 
-struct State {}
+struct State {
+    viewport_pos: [f32; 2],
+}
